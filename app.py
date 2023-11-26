@@ -7,11 +7,21 @@ from models.progen.modeling_progen import ProGenForCausalLM
 
 model_id = 'simple_fine_tuned_progen2-small'
 
-def is_even(job):   
+def get_proteins(job):   
 
     job_input = job["input"]
     target_sequence = job_input["target_sequence"]
     number_of_sequences = job_input["number_of_sequences"]
+    model_name = job_input["model_name"]
+
+    models = [
+        "simple_fine_tuned_progen2-small",
+        "simple_fine_tuned_progen2-medium",
+        "simple_fine_tuned_progen2-large"
+    ]
+
+    if model_name not in models:
+        return {"error": "Silly human, you need to pass a valid model."}
 
     if not isinstance(target_sequence, str):
         return {"error": "Silly human, you need to pass a string."}
@@ -60,4 +70,4 @@ def is_even(job):
 
     return test
 
-runpod.serverless.start({"handler": is_even})
+runpod.serverless.start({"handler": get_proteins})
